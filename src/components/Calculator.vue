@@ -3,20 +3,21 @@
   <p>{{ count }}</p>
   <div class="grid-container">
     <p> {{ display }}</p> <br>
-    <input type="submit" value="1" @click="handleClick(1)">
-    <input type="submit" value="2" @click="handleClick(2)">
-    <input type="submit" value="3" @click="handleClick(3)"> <br>
-    <input type="submit" value="4" @click="handleClick(4)">
-    <input type="submit" value="5" @click="handleClick(5)">
-    <input type="submit" value="6" @click="handleClick(6)"> <br>
-    <input type="submit" value="7" @click="handleClick(7)">
-    <input type="submit" value="8" @click="handleClick(8)">
-    <input type="submit" value="9" @click="handleClick(9)"> <br>
+    <input type="submit" value="1" @click="handleDigit(1)">
+    <input type="submit" value="2" @click="handleDigit(2)">
+    <input type="submit" value="3" @click="handleDigit(3)"> <br>
+    <input type="submit" value="4" @click="handleDigit(4)">
+    <input type="submit" value="5" @click="handleDigit(5)">
+    <input type="submit" value="6" @click="handleDigit(6)"> <br>
+    <input type="submit" value="7" @click="handleDigit(7)">
+    <input type="submit" value="8" @click="handleDigit(8)">
+    <input type="submit" value="9" @click="handleDigit(9)"> <br>
     <input type="submit" value="+" @click="handleOperation('+')"> 
-    <input type="submit" value="-" @click="handleOperation('+')"> 
-    <input type="submit" value="*" @click="handleOperation('+')"> 
-    <input type="submit" value="/" @click="handleOperation('+')"> 
-    <button @click="handleButton"> = </button>
+    <input type="submit" value="-" @click="handleOperation('-')"> 
+    <input type="submit" value="x" @click="handleOperation('*')"> 
+    <input type="submit" value="/" @click="handleOperation('/')"> 
+    <input type="submit" value="CE" @click="cleanCalculator()"> 
+    <button @click="handleResult"> = </button>
   </div>
 </template>
 
@@ -38,16 +39,34 @@ export default {
   },
 
   methods: {
-    handleButton(){
+    handleResult(){
       this.digits.push(Number(this.display))
-      this.display = this.digits.reduce((digit, acc) => acc += Number(digit), 0)
+      console.log(this.operation);
+
+      //Result method
+      switch (this.operation) {
+        case "+":
+          this.display = this.digits[0] + this.digits[1]
+          break;
+        case "-":
+          this.display = this.digits[0] - this.digits[1]
+          break;
+        case "*":
+          this.display = this.digits[0] * this.digits[1]
+          break;
+        case "/":
+          this.display = this.digits[0] / this.digits[1]
+          break;
+      }
+       
     },
 
-    handleClick(n){
+    handleDigit(n){
       this.display += n
     },
 
-    handleOperation(){
+    handleOperation(op){
+      this.operation = op
       this.digits.push(Number(this.display))
       this.display = ""
     },
@@ -55,6 +74,11 @@ export default {
     showDisplay(){
       return this.display
     },
+
+    cleanCalculator(){
+      this.digits = []
+      this.display = 0
+    }
 
   },
 }
