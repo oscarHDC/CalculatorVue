@@ -3,24 +3,8 @@
   <p>{{ count }}</p>
   <div class="grid-container">
     <div class="calculator">
-
       <Display v-bind:input="displayContent" />
-
-      <input type="button" value="9" @click="handleDigit(9)">
-      <input type="button" value="8" @click="handleDigit(8)">
-      <input type="button" value="7" @click="handleDigit(7)">
-      <input type="button" value="x" @click="handleOperation('*')" > 
-      <input type="button" value="6" @click="handleDigit(6)"> 
-      <input type="button" value="5" @click="handleDigit(5)">
-      <input type="button" value="4" @click="handleDigit(4)">
-      <input type="button" value="-" @click="handleOperation('-')">
-      <input type="button" value="3" @click="handleDigit(3)">
-      <input type="button" value="2" @click="handleDigit(2)">
-      <input type="button" value="1" @click="handleDigit(1)">
-      <input type="button" value="+" @click="handleOperation('+')">
-      <input type="button" value="/" @click="handleOperation('/')"> 
-      <input type="button" value="CE" @click="cleanCalculator()"> 
-    <button @click="handleResult"> = </button>
+      <KeyBoard @key-Clicked="handleClick" />
   </div>
   </div>
 </template>
@@ -28,10 +12,11 @@
 <script>
 
 import Display from './Display.vue';
+import KeyBoard from './KeyBoard.vue';
 
 export default {
     name: "CalculatorComp",
-    components: {Display},
+    components: {Display, KeyBoard},
     props: {
         msg: String,
     },
@@ -77,7 +62,32 @@ export default {
             this.digits = [];
             this.displayContent = "";
         },
+
+        handleClick(value){
+            //Funcionalidad botones
+            console.log( value);
+            switch (value) {
+              case "x":
+              case "-":
+              case "/":
+              case "+":
+                this.handleOperation(value);
+                break;
+              case "CE":
+                this.cleanCalculator();
+                break;
+              case "=":
+                this.handleResult()  
+                break;  
+            
+              default:
+                this.handleDigit(value)
+                break;
+            }
+
+        }
     },
+    
 
 }
 </script>
@@ -86,36 +96,10 @@ export default {
 <style>
 
   .calculator{
-    max-width: 200px;
+    max-width: 250px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
+    
   }
 
-  .calculator input, button{
-    background-color: #04AA6D;
-    border: none;
-    color: white;
-    padding: 16px;
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .calculator input:hover, button:hover{
-    background-color: #017d50;
-  }
-
-  .calculator button{
-    grid-column: span 2;
-  }
-
-  .calculator--display{
-    grid-column: 1 / -1;
-    width: 100%;
-    padding: 15px;
-    border: 1px solid black;
-    text-align: center;
-    margin: 0 auto;
-  }
 
 </style>
